@@ -1,0 +1,21 @@
+version: '3'
+services:
+  chat-main:
+    image: chat-back
+    container_name: chat-main
+    ports:
+      - "5000:5000"
+    networks:
+      - chat-network
+
+  chat-vue:
+    image: chat-front
+    container_name: chat-vue
+    ports:
+      - "8080:8080"
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge

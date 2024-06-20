@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -6,11 +6,10 @@ import openai
 import os
 from dotenv import load_dotenv
 
-
 load_dotenv(dotenv_path=".env.credentials")
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}) #changed
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -23,9 +22,21 @@ db = client.chat_db
 messages_col = db.messages
 users_col = db.users
 
+@app.route('/')
+def index():
+    return "Flask server is running."
+
+@app.route('/check_mongo')
+def check_mongo():
+    try:
+        client.admin.command('ping')
+        return jsonify(status="MongoDB is connected"), 200
+    except Exception as e:
+        return jsonify(status="MongoDB is not connected", error=str(e)), 500
+
 @socketio.on('connect')
 def handle_connect(auth=None):
-    messages = list(messages_col.find({}, {'_id': 0}))  # already excluding _id here
+    messages = list(messages_col.find({}, {'_id': 0}))
     for message in messages:
         emit('receive_message', message)
     update_users_online()
@@ -36,9 +47,8 @@ def handle_send_message(data):
     if user_message.startswith("/ask"):
         query = user_message[5:].strip()
         user_message_doc = {'name': data['name'], 'message': user_message, 'time': data["time"]}
-        print(user_message_doc)
         result = messages_col.insert_one(user_message_doc)
-        user_message_doc['_id'] = str(result.inserted_id) 
+        user_message_doc['_id'] = str(result.inserted_id)
         emit('receive_message', user_message_doc, broadcast=True)
         try:
             response = openai.ChatCompletion.create(
@@ -66,7 +76,7 @@ def handle_send_message(data):
     else:
         user_message_doc = {'name': data['name'], 'message': user_message, 'time': data["time"]}
         result = messages_col.insert_one(user_message_doc)
-        user_message_doc['_id'] = str(result.inserted_id) 
+        user_message_doc['_id'] = str(result.inserted_id)
         emit('receive_message', user_message_doc, broadcast=True)
 
 @socketio.on('disconnect')
@@ -90,4 +100,4 @@ def update_users_online():
     emit('users_online', users_online, broadcast=True)
 
 if __name__ == '__main__':
-    socketio.run(app, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
