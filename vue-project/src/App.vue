@@ -63,7 +63,29 @@ export default {
   },
   methods: {
     connectToSocket() {
-      this.socket = io("'http://chat-main-cont:5000'");
+      this.socket = io("ws://localhost:5000", {
+        withCredentials: true,
+        extraHeaders: {
+          "my-custom-header": "abcd"
+        }
+      });
+
+      this.socket.on("connect", () => {
+        console.log("Connected to WebSocket server");
+      });
+
+      this.socket.on("connect_error", (err) => {
+        console.error("Connection Error:", err);
+      });
+
+      this.socket.on("connect_timeout", () => {
+        console.error("Connection Timeout");
+      });
+
+      this.socket.on("error", (err) => {
+        console.error("Error:", err);
+      });
+
       this.socket.on("receive_message", (msg) => {
         this.messages.push(msg);
       });
@@ -83,6 +105,7 @@ export default {
           (user) => user.name !== name
         );
       });
+
       this.socket.on("bot_answer", () => {
         this.botIsTyping = false;
       });
