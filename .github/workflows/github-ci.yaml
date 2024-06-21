@@ -21,9 +21,9 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
 
-    - name: getenv
-      run: printenv
-      
+    - name: Set Commit Short SHA
+      run: echo "COMMIT_SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
     - name: Build and Push Docker Front Image With Commit SHA
       uses: docker/build-push-action@v5
       with:
