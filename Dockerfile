@@ -10,7 +10,6 @@ RUN pip install --upgrade python-socketio flask-socketio
 
 
 COPY main.py .
-COPY .env.credentials .
 
 EXPOSE 5000
 
