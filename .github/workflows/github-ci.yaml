@@ -70,6 +70,6 @@ jobs:
       run: docker pull maneav78/chat-back:latest
 
     - name: Running docker-compose
-      run: docker-compose up -d
+      run: ls
 
    
