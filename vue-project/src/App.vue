@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     connectToSocket() {
-      this.socket = io("http://chat-main:5000", {
+      this.socket = io("ws://localhost:5000", {
         withCredentials: true,
         extraHeaders: {
           "my-custom-header": "abcd"

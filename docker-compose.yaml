@@ -1,16 +1,16 @@
 version: '3'
 services:
   chat-main:
-    image: chat-back
-    container_name: chat-main
+    image: maneav78/chat-back:latest
+    container_name: chat-main-dc
     ports:
       - "5000:5000"
     networks:
       - chat-network
 
   chat-vue:
-    image: chat-front
-    container_name: chat-vue
+    image: maneav78/chat-front:latest
+    container_name: chat-vue-dc
     ports:
       - "8080:8080"
     networks:
