@@ -20,6 +20,10 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+
+    - name: getenv
+      run: printenv
+      
     - name: Build and Push Docker Front Image With Commit SHA
       uses: docker/build-push-action@v5
       with:
