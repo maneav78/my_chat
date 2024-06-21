@@ -63,7 +63,7 @@ jobs:
       run: docker pull maneav78/chat-front:latest
 
     - name: Pull Back Image
-      run: docker pull maneav78/chat-bach:latest
+      run: docker pull maneav78/chat-back:latest
 
     - name: Running docker-compose
       run: docker-compose up -d
