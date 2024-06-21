@@ -63,6 +63,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Pull Front Image
       run: docker pull maneav78/chat-front:latest
 
@@ -70,6 +73,9 @@ jobs:
       run: docker pull maneav78/chat-back:latest
 
     - name: Running docker-compose
-      run: ls
+      run: docker compose up -d
+
+    - name: Docker Compose down
+      run: docker-compose down
 
    
