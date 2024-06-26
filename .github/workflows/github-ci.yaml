@@ -100,6 +100,7 @@ jobs:
             kind create cluster --name my-chat-cluster
             kubectl cluster-info --context kind-my-chat-cluster
             cat ./k8s/deployment.yaml
+            kubectl cluster-info dump
             kubectl apply -f ./k8s/deployment.yaml
 
 
