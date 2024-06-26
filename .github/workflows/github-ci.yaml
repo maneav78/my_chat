@@ -99,7 +99,6 @@ jobs:
       run: |
             kind create cluster --name my-chat-cluster
             kubectl cluster-info --context kind-my-chat-cluster
-            kubectl apply -f ./k8s/deployment.yaml
 
     - name: Applying yaml file
       run: |
