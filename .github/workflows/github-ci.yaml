@@ -93,17 +93,15 @@ jobs:
             sudo mv ./kind /usr/local/bin/kind
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-            kubectl version --client
-            
+
+    - name: Creating cluster and applying yaml file
+      run: |
+            kind create cluster --name my-chat-cluster
+            kubectl cluster-info --context kind-my-chat-cluster
+            kubectl apply -f ../k8s/deployment.yaml
 
 
-    - name: Pull Back Image
-      run: docker pull maneav78/chat-back:latest
 
-    - name: Running docker-compose
-      run: docker compose up -d
 
-    - name: Docker Compose down
-      run: docker-compose down
 
    
