@@ -78,4 +78,28 @@ jobs:
     - name: Docker Compose down
       run: docker-compose down
 
+  Deploy:
+    name: Deploying on k8s 
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Downloading Kind
+      run: | 
+            curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
+            chmod +x ./kind
+            sudo mv ./kind /usr/local/bin/kind
+
+
+    - name: Pull Back Image
+      run: docker pull maneav78/chat-back:latest
+
+    - name: Running docker-compose
+      run: docker compose up -d
+
+    - name: Docker Compose down
+      run: docker-compose down
+
    
