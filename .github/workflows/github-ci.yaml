@@ -102,8 +102,8 @@ jobs:
 
     - name: Applying yaml file
       run: |
-        sed -i 's|MONGO_URI_PLACEHOLDER|'"${{ secrets.MONGO_URI }}"'|g' ./k8s/deployment.yaml
-        sed -i 's|API_KEY_PLACEHOLDER|'"${{ secrets.API_KEY }}"'|g' ./k8s/deployment.yaml
+        sed -i 's|MONGO_URI_PLACEHOLDER|'"${{ secrets.MONGODB_URI }}"'|g' ./k8s/deployment.yaml
+        sed -i 's|API_KEY_PLACEHOLDER|'"${{ secrets.OPENAI_API_KEY }}"'|g' ./k8s/deployment.yaml
         kubectl apply -f ./k8s/deployment.yaml
 
 
