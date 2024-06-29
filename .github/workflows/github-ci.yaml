@@ -111,7 +111,11 @@ jobs:
         run: docker compose up -d
 
       - name: Wait for services to start
-        run: sleep 25   
+        run: sleep 30
+
+      - name: curl testing
+        run: |
+          curl -f http://localhost:5000/ || exit 1  
 
       - name: Run script to send chat message
         run: python test.py
