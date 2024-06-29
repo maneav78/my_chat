@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from pymongo import MongoClient
-import openai 
+import openai
 import os
 from dotenv import load_dotenv
 
@@ -46,7 +46,6 @@ def api_send_message():
     user_message_doc['_id'] = str(result.inserted_id)
     socketio.emit('receive_message', user_message_doc, broadcast=True)
     return jsonify(status="Message sent"), 200
-
 
 @socketio.on('connect')
 def handle_connect(auth=None):
