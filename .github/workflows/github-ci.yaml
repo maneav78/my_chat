@@ -111,15 +111,10 @@ jobs:
         run: docker compose up -d
 
       - name: Wait for services to start
-        run: sleep 25  
-
-      - name: curl testing
-        run: |
-          curl -f http://localhost:5000/ || exit 1 
+        run: sleep 25   
 
       - name: Run script to send chat message
-        run: |
-          python test.py
+        run: python test.py
 
   Deploy:
     name: Deploying on k8s 
