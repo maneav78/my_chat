@@ -52,6 +52,26 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/chat-back:latest
 
+  test_send_chat_message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install requests library
+        run: |
+          python -m pip install requests
+
+      - name: Run script to send chat message
+        run: |
+          python send_chat_message.py
+
   ComposeChecking:
     name: Checking the docker-compose file
     runs-on: ubuntu-latest

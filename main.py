@@ -34,6 +34,20 @@ def check_mongo():
     except Exception as e:
         return jsonify(status="MongoDB is not connected", error=str(e)), 500
 
+@app.route('/api/send_message', methods=['POST'])
+def api_send_message():
+    data = request.json
+    user_message = data.get("message")
+    name = data.get("name", "System")
+    time = data.get("time")
+    
+    user_message_doc = {'name': name, 'message': user_message, 'time': time}
+    result = messages_col.insert_one(user_message_doc)
+    user_message_doc['_id'] = str(result.inserted_id)
+    socketio.emit('receive_message', user_message_doc, broadcast=True)
+    return jsonify(status="Message sent"), 200
+
+
 @socketio.on('connect')
 def handle_connect(auth=None):
     messages = list(messages_col.find({}, {'_id': 0}))
