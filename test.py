@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-url = "http://localhost:5000/api/send_message" 
+url = "http://localhost:8080/api/send_message" 
 payload = {
     "message": "This is a test message from CI pipeline.",
     "name": "CI Bot",
