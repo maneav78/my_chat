@@ -104,6 +104,12 @@ jobs:
       - name: Running docker-compose
         run: docker compose up -d
 
+      - name: curl testing
+        run: |
+          curl -X POST http://localhost:5000/api/send_message \
+          -H "Content-Type: application/json" \
+          -d '{"message": "This is a test message from CI pipeline.", "name": "CI Bot", "time": "2024-06-29 12:00:00"}'
+
       - name: Run script to send chat message
         run: |
           python test.py
