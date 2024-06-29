@@ -82,6 +82,12 @@ jobs:
   test_send_chat_message:
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -104,9 +110,12 @@ jobs:
       - name: Running docker-compose
         run: docker compose up -d
 
+      - name: Wait for services to start
+        run: sleep 25  
+
       - name: curl testing
         run: |
-          curl -X POST http://localhost:5000/ 
+          curl -f http://localhost:5000/ || exit 1 
 
       - name: Run script to send chat message
         run: |
