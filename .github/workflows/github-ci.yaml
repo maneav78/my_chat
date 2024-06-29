@@ -115,7 +115,7 @@ jobs:
 
       - name: curl testing
         run: |
-          curl -f http://localhost:5000/ || exit 1  
+          curl -f http://localhost:8080/ || exit 1  
 
       - name: Run script to send chat message
         run: python test.py
