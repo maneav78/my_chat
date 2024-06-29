@@ -70,7 +70,7 @@ jobs:
 
       - name: Run script to send chat message
         run: |
-          python send_chat_message.py
+          python test.py
 
   ComposeChecking:
     name: Checking the docker-compose file
