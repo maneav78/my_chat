@@ -111,7 +111,7 @@ jobs:
         run: docker compose up -d
 
       - name: Wait for services to start
-        run: sleep 30
+        run: sleep 120
       
       - name: print docker compose logs
         run: |
