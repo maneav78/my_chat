@@ -112,6 +112,10 @@ jobs:
 
       - name: Wait for services to start
         run: sleep 30
+      
+      - name: print docker compose logs
+        run: |
+          docker compose logs  
 
       - name: curl testing
         run: |
