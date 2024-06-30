@@ -121,8 +121,16 @@ jobs:
         run: |
           curl -f http://localhost:8080/ || exit 1  
 
+      - name: print docker compose logs
+        run: |
+          docker compose logs  
+
       - name: Run script to send chat message
         run: python test.py
+
+      - name: print docker compose logs
+        run: |
+          docker compose logs  
 
   Deploy:
     name: Deploying on k8s 
