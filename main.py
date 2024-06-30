@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from pymongo import MongoClient
-import openai 
+import openai
 import os
 from dotenv import load_dotenv
 
@@ -33,6 +33,19 @@ def check_mongo():
         return jsonify(status="MongoDB is connected"), 200
     except Exception as e:
         return jsonify(status="MongoDB is not connected", error=str(e)), 500
+
+@app.route('/api/send_message', methods=['POST'])
+def api_send_message():
+    data = request.json
+    user_message = data.get("message")
+    name = data.get("name", "System")
+    time = data.get("time")
+    
+    user_message_doc = {'name': name, 'message': user_message, 'time': time}
+    result = messages_col.insert_one(user_message_doc)
+    user_message_doc['_id'] = str(result.inserted_id)
+    socketio.emit('receive_message', user_message_doc, broadcast=True)
+    return jsonify(status="Message sent"), 200
 
 @socketio.on('connect')
 def handle_connect(auth=None):
