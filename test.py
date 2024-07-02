@@ -13,5 +13,5 @@ def send_message():
     print(f'Sent message: {predefined_message}')
 
 if __name__ == '__main__':
-    sio.connect('http://localhost:5000')
+    sio.connect('ws://localhost:5000')
 
