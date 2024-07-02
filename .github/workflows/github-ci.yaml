@@ -111,19 +111,18 @@ jobs:
         run: docker compose up -d
 
       - name: Wait for services to start
-        run: sleep 120
-      
-      - name: print docker compose logs
         run: |
-          docker compose logs  
+          until curl -s http://localhost:5000 > /dev/null; do
+            echo "Waiting for Flask server to start..."
+            sleep 5
+          done
+      
+      - name: Print Docker Compose logs
+        run: docker compose logs  
 
-      - name: curl testing
+      - name: Curl Testing
         run: |
           curl -f http://localhost:8080/ || exit 1  
-
-      - name: print docker compose logs
-        run: |
-          docker compose logs  
 
       - name: Downloading Requirements
         run: pip install -r requirements.txt
@@ -131,9 +130,9 @@ jobs:
       - name: Run script to send chat message
         run: python test.py
 
-      - name: print docker compose logs
-        run: |
-          docker compose logs  
+      - name: Print Docker Compose logs
+        run: docker compose logs  
+  
 
   deploy:
     name: Deploying on k8s 
