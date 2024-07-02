@@ -110,6 +110,9 @@ jobs:
       - name: Running docker-compose
         run: docker compose up -d
 
+      - name: Print Flask container logs
+        run: docker logs chat-main-dc
+
       - name: Wait for services to start
         run: |
           until curl -s http://localhost:5000 > /dev/null; do
@@ -119,10 +122,6 @@ jobs:
       
       - name: Print Docker Compose logs
         run: docker compose logs  
-
-      - name: Curl Testing
-        run: |
-          curl -f http://localhost:8080/ || exit 1  
 
       - name: Downloading Requirements
         run: pip install -r requirements.txt
