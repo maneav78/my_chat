@@ -75,8 +75,12 @@ jobs:
     - name: Running docker-compose
       run: docker compose up -d
 
+
     - name: Print Flask container logs
       run: docker logs chat-main-dc
+
+    - name: Shell into Flask container
+      run: docker exec -it chat-main-dc /bin/sh
 
     - name: Docker Compose down
       run: docker compose down
@@ -113,18 +117,18 @@ jobs:
       - name: Running docker-compose
         run: docker compose up -d
 
-      - name: Print Flask container logs
-        run: docker logs chat-main-dc
-
-      - name: Wait for services to start
+      - name: Wait for Flask server to start
         run: |
           until curl -s http://localhost:5000 > /dev/null; do
             echo "Waiting for Flask server to start..."
             sleep 5
           done
+      
+      - name: Print Flask container logs
+        run: docker logs chat-main-dc
 
       - name: Print Docker Compose logs
-        run: docker compose logs
+        run: docker compose logs  
 
       - name: Downloading Requirements
         run: pip install -r requirements.txt
@@ -134,7 +138,6 @@ jobs:
 
       - name: Print Docker Compose logs
         run: docker compose logs  
-  
 
   deploy:
     name: Deploying on k8s 
