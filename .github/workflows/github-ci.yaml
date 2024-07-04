@@ -79,8 +79,11 @@ jobs:
     - name: Print Flask container logs
       run: docker logs chat-main-dc
 
-    - name: Shell into Flask container
-      run: docker exec -it chat-main-dc /bin/sh
+    - name: Run diagnostic commands in Flask container
+      run: |
+        docker exec chat-main-dc ls /app
+        docker exec chat-main-dc cat /app/main.py
+        docker exec chat-main-dc env
 
     - name: Docker Compose down
       run: docker compose down
