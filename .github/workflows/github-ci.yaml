@@ -86,12 +86,15 @@ jobs:
       - name: Print Environment Variables
         run: printenv
 
-      - name: Wait for Flask server to start
-        run: |
-          until curl -s http://localhost:5000 > /dev/null; do
-            echo "Waiting for Flask server to start..."
-            sleep 5
-          done
+      # - name: Wait for Flask server to start
+      #   run: |
+      #     until curl -s http://localhost:5000 > /dev/null; do
+      #       echo "Waiting for Flask server to start..."
+      #       sleep 5
+      #     done
+
+      - name: waiting stage 
+        run: sleep 70
 
       - name: Print Flask container logs
         run: docker logs chat-main-dc
@@ -140,12 +143,12 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: docker-compose up -d
 
-      - name: Wait for Flask server to start
-        run: |
-          until curl -s http://localhost:5000 > /dev/null; do
-            echo "Waiting for Flask server to start..."
-            sleep 5
-          done
+      # - name: Wait for Flask server to start
+      #   run: |
+      #     until curl -s http://localhost:5000 > /dev/null; do
+      #       echo "Waiting for Flask server to start..."
+      #       sleep 5
+      #     done
       
       - name: Print Flask container logs
         run: docker logs chat-main-dc
