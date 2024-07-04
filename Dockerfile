@@ -1,5 +1,5 @@
-FROM python:3.10.14-alpine3.20
-
+# FROM python:3.10.14-alpine3.20
+FROM python:3.12-alpine
 WORKDIR /app
 
 
@@ -9,7 +9,7 @@ RUN pip install -r requirements.txt
 RUN pip install --upgrade python-socketio flask-socketio
 
 
-COPY main.py .
+COPY . .
 
 EXPOSE 5000
 
