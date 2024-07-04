@@ -73,7 +73,10 @@ jobs:
       run: docker pull ${{ secrets.DOCKER_USERNAME }}/chat-back:latest
 
     - name: Running docker-compose
-      run: docker compose up -d
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      run: docker-compose up -d
 
     - name: Print Environment Variables
       run: printenv
@@ -95,7 +98,7 @@ jobs:
         docker exec chat-main-dc env
 
     - name: Docker Compose down
-      run: docker compose down
+      run: docker-compose down
 
   test_send_chat_message:
     runs-on: ubuntu-latest
@@ -127,7 +130,10 @@ jobs:
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/chat-back:latest
 
       - name: Running docker-compose
-        run: docker compose up -d
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: docker-compose up -d
 
       - name: Wait for Flask server to start
         run: |
@@ -140,7 +146,7 @@ jobs:
         run: docker logs chat-main-dc
 
       - name: Print Docker Compose logs
-        run: docker compose logs  
+        run: docker-compose logs  
 
       - name: Downloading Requirements
         run: pip install -r requirements.txt
@@ -149,7 +155,7 @@ jobs:
         run: python test.py
 
       - name: Print Docker Compose logs
-        run: docker compose logs  
+        run: docker-compose logs  
 
   deploy:
     name: Deploying on k8s 
@@ -163,19 +169,4 @@ jobs:
     - name: Downloading Kind
       run: | 
             curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
-            chmod +x ./kind
-            sudo mv ./kind /usr/local/bin/kind
-            
-    - name: Set up Kubernetes
-      uses: azure/setup-kubectl@v3
-
-    - name: Creating cluster
-      run: |
-            kind create cluster --name my-chat-cluster
-            kubectl cluster-info --context kind-my-chat-cluster
-
-    - name: Applying yaml file
-      run: |
-        sed -i 's|MONGO_URI_PLACEHOLDER|'"${{ secrets.MONGODB_URI }}"'|g' ./k8s/deployment.yaml
-        sed -i 's|API_KEY_PLACEHOLDER|'"${{ secrets.OPENAI_API_KEY }}"'|g' ./k8s/deployment.yaml
-        kubectl apply -f ./k8s/deployment.yaml
+            chmod +x ./
