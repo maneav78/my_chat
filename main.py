@@ -4,9 +4,6 @@ from flask_cors import CORS
 from pymongo import MongoClient
 import openai
 import os
-from dotenv import load_dotenv
-
-load_dotenv(dotenv_path=".env.credentials")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
