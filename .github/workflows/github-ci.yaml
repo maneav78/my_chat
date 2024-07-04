@@ -93,8 +93,8 @@ jobs:
       #       sleep 5
       #     done
 
-      - name: waiting stage 
-        run: sleep 70
+      - name: Waiting
+        run: sleep 120
 
       - name: Print Flask container logs
         run: docker logs chat-main-dc
@@ -125,7 +125,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.12
+          python-version: '3.12'
       
       - name: Install requests library
         run: |
@@ -149,6 +149,9 @@ jobs:
       #       echo "Waiting for Flask server to start..."
       #       sleep 5
       #     done
+
+      - name: Waiting
+        run: sleep 120
       
       - name: Print Flask container logs
         run: docker logs chat-main-dc

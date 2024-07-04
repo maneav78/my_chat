@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent')
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 print("Loaded API Key:", openai.api_key)
@@ -30,7 +30,6 @@ def check_mongo():
         return jsonify(status="MongoDB is connected"), 200
     except Exception as e:
         return jsonify(status="MongoDB is not connected", error=str(e)), 500
-
 
 @socketio.on('message')
 def handle_message(msg):
@@ -103,4 +102,4 @@ def update_users_online():
     emit('users_online', users_online, broadcast=True)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5000)
