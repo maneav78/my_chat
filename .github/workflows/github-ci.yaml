@@ -29,7 +29,7 @@ jobs:
         context: ./vue-project
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/chat-front:${{ env.COMMIT_SHORT_SHA }}
-
+      
     - name: Build and Push Docker Front Image 
       uses: docker/build-push-action@v5
       with:
@@ -75,6 +75,9 @@ jobs:
     - name: Running docker-compose
       run: docker compose up -d
 
+    - name: Print Flask container logs
+      run: docker logs chat-main-dc
+
     - name: Docker Compose down
       run: docker compose down
 
@@ -119,9 +122,9 @@ jobs:
             echo "Waiting for Flask server to start..."
             sleep 5
           done
-      
+
       - name: Print Docker Compose logs
-        run: docker compose logs  
+        run: docker compose logs
 
       - name: Downloading Requirements
         run: pip install -r requirements.txt
