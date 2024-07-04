@@ -10,6 +10,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent')
 
+# Load secrets from environment variables
 openai.api_key = os.getenv('OPENAI_API_KEY')
 print("Loaded API Key:", openai.api_key)
 
