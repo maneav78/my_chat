@@ -75,6 +75,15 @@ jobs:
     - name: Running docker-compose
       run: docker compose up -d
 
+    - name: Print Environment Variables
+      run: printenv
+
+    - name: Wait for Flask server to start
+      run: |
+        until curl -s http://localhost:5000 > /dev/null; do
+          echo "Waiting for Flask server to start..."
+          sleep 5
+        done
 
     - name: Print Flask container logs
       run: docker logs chat-main-dc
