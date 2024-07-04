@@ -72,6 +72,11 @@ jobs:
     - name: Pull Back Image
       run: docker pull ${{ secrets.DOCKER_USERNAME }}/chat-back:latest
 
+    - name: Set environment variables
+      run: |
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> $GITHUB_ENV
+
     - name: Running docker-compose
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -169,4 +174,19 @@ jobs:
     - name: Downloading Kind
       run: | 
             curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
-            chmod +x ./
+            chmod +x ./kind
+            sudo mv ./kind /usr/local/bin/kind
+            
+    - name: Set up Kubernetes
+      uses: azure/setup-kubectl@v3
+
+    - name: Creating cluster
+      run: |
+            kind create cluster --name my-chat-cluster
+            kubectl cluster-info --context kind-my-chat-cluster
+
+    - name: Applying yaml file
+      run: |
+        sed -i 's|MONGO_URI_PLACEHOLDER|'"${{ secrets.MONGODB_URI }}"'|g' ./k8s/deployment.yaml
+        sed -i 's|API_KEY_PLACEHOLDER|'"${{ secrets.OPENAI_API_KEY }}"'|g' ./k8s/deployment.yaml
+        kubectl apply -f ./k8s/deployment.yaml
