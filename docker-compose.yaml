@@ -8,8 +8,8 @@ services:
     networks:
       - chat-network
     environment:
-      - OPENAI_API_KEY
-      - MONGODB_URI
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - MONGODB_URI=${MONGODB_URI}
 
   chat-vue:
     image: maneav78/chat-front:latest
