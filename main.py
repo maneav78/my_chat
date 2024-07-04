@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
 # Load secrets from environment variables
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -47,7 +47,7 @@ def handle_connect(auth=None):
 @socketio.on('send_message')
 def handle_send_message(data):
     user_message = data["message"]
-    if user_message.startswith("/ask"):
+    if (user_message.startswith("/ask")):
         query = user_message[5:].strip()
         user_message_doc = {'name': data['name'], 'message': user_message, 'time': data["time"]}
         result = messages_col.insert_one(user_message_doc)
