@@ -150,6 +150,9 @@ jobs:
       - name: Print Flask container logs
         run: docker logs chat-main-dc
 
+      - name: Check Docker Compose Logs
+        run: docker-compose logs chat-main-dc
+
       - name: Print Docker Compose logs
         run: docker-compose logs  
 
