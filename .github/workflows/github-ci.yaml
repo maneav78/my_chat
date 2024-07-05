@@ -129,7 +129,11 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: docker-compose up -d --build
-
+      
+      - name: Print Secret
+        run: |
+              echo ${{ secrets.OPENAI_API_KEY }}
+              echo ${{ secrets.MONGODB_URI }}
       - name: Waiting
         run: sleep 180 
       
