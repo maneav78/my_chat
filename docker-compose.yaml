@@ -10,11 +10,7 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - MONGODB_URI=${MONGODB_URI}
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:5000/ || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+  
 
   chat-vue:
     image: maneav78/chat-front:latest
