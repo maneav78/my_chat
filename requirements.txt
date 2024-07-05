@@ -14,7 +14,7 @@ colorama==0.4.6
 cryptography==42.0.5
 distro==1.9.0
 Django==4.2.3
-dnspython==1.16.0
+dnspython==2.3.0 
 eventlet==0.36.1
 Flask==3.0.3
 flask-cors==4.0.0
@@ -22,7 +22,7 @@ flask-socketio==5.3.6
 frozenlist==1.4.1
 gevent==22.10.2
 gevent-websocket==0.10.1
-greenlet==2.0.2  # Compatible version
+greenlet==2.0.2  
 h11==0.14.0
 httpcore==1.0.5
 httpx==0.27.0
