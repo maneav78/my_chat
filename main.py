@@ -47,7 +47,7 @@ def handle_connect(auth=None):
 @socketio.on('send_message')
 def handle_send_message(data):
     user_message = data["message"]
-    if (user_message.startswith("/ask")):
+    if user_message.startswith("/ask"):
         query = user_message[5:].strip()
         user_message_doc = {'name': data['name'], 'message': user_message, 'time': data["time"]}
         result = messages_col.insert_one(user_message_doc)
