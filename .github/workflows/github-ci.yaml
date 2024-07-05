@@ -137,7 +137,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        run: docker-compose up -d --build
+        run: docker-compose up --build
 
       - name: Waiting
         run: sleep 120
