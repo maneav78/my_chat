@@ -1,15 +1,19 @@
-FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+FROM python:3.11-slim
 
 WORKDIR /app
 
+
 COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
+
 
 COPY . .
 
-CMD ["python", "main.py"]
+
+ENV FLASK_APP=app.py
+
+EXPOSE 5000
+
+
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
