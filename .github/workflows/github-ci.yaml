@@ -124,9 +124,14 @@ jobs:
       - name: Pull Back Image
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/chat-back:latest
 
+      - name: Set environment variables
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> $GITHUB_ENV
+
       - name: Print Environment Variables
         run: printenv
-        
+
       - name: Running docker-compose
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
