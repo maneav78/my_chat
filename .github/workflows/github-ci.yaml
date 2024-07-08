@@ -83,17 +83,25 @@ jobs:
       - name: Print Environment Variables
         run: printenv
 
-      - name: Running docker-compose
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        run: docker-compose up -d --build  
+      # - name: Running docker-compose
+      #   env:
+      #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      #     MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      #   run: docker-compose up -d --build  
 
-      - name: Print Docker Compose logs
-        run: docker-compose logs
+      # - name: Print Docker Compose logs
+      #   run: docker-compose logs
 
-      - name: Docker Compose down
-        run: docker-compose down
+      - name: Docker config 
+        run: |
+              docker network create chat-network
+              docker run -d --name container_name_front --network chat-network -p 8080:8080 maneav78/chat-back
+              
+      - name: Image Run Seperately steps
+        run: docker run -d --name container_name --network chat-network -p 5000:5000 -e OPENAI_API_KEY="$OPENAI_API_KEY" -e MONGODB_URI="$MONGODB_URI" maneav78/chat-back
+
+      # - name: Docker Compose down
+      #   run: docker-compose down
 
   test_send_chat_message:
     name: Test Send Chat Message
@@ -147,11 +155,9 @@ jobs:
       - name: Waiting
         run: sleep 180 
       
+      
       - name: Print Flask container logs
         run: docker logs chat-main-dc
-
-      - name: Check Docker Compose Logs
-        run: docker-compose logs chat-main-dc
 
       - name: Print Docker Compose logs
         run: docker-compose logs  
