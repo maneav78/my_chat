@@ -106,7 +106,9 @@ jobs:
       - name: Docker logging
         run: docker logs container_name_front
 
- 
+      - name: Docker inspecting
+        run: docker inspect dcontainer_name
+
       # - name: Docker Compose down
       #   run: docker-compose down
 
