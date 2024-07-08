@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   chat-main:
     image: maneav78/chat-back:latest
@@ -7,6 +7,10 @@ services:
       - "5000:5000"
     networks:
       - chat-network
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - MONGODB_URI=${MONGODB_URI}
+  
 
   chat-vue:
     image: maneav78/chat-front:latest

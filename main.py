@@ -1,18 +1,16 @@
 from flask import Flask, request, jsonify
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send
 from flask_cors import CORS
 from pymongo import MongoClient
-import openai 
+import openai
 import os
-from dotenv import load_dotenv
-
-load_dotenv(dotenv_path=".env.credentials")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
+# Load secrets from environment variables
 openai.api_key = os.getenv('OPENAI_API_KEY')
 print("Loaded API Key:", openai.api_key)
 
@@ -33,6 +31,11 @@ def check_mongo():
         return jsonify(status="MongoDB is connected"), 200
     except Exception as e:
         return jsonify(status="MongoDB is not connected", error=str(e)), 500
+
+@socketio.on('message')
+def handle_message(msg):
+    print('Message received: ' + msg)
+    send(msg, broadcast=True)
 
 @socketio.on('connect')
 def handle_connect(auth=None):
@@ -100,4 +103,4 @@ def update_users_online():
     emit('users_online', users_online, broadcast=True)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5000)
