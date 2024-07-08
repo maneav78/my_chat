@@ -100,6 +100,12 @@ jobs:
       - name: Image Run Seperately steps
         run: docker run -d --name container_name --network chat-network -p 5000:5000 -e OPENAI_API_KEY="$OPENAI_API_KEY" -e MONGODB_URI="$MONGODB_URI" maneav78/chat-back
 
+      - name: Docker logging
+        run: |
+              docker ps
+              docker logs -f container_name
+
+ 
       # - name: Docker Compose down
       #   run: docker-compose down
 
