@@ -60,18 +60,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@v2
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # - name: Pull Front Image
-      #   run: docker pull ${{ secrets.DOCKER_USERNAME }}/chat-front:latest
-
-      # - name: Pull Back Image
-      #   run: docker pull ${{ secrets.DOCKER_USERNAME }}/chat-back:latest
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -83,34 +71,26 @@ jobs:
       - name: Print Environment Variables
         run: printenv
 
-      # - name: Running docker-compose
-      #   env:
-      #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      #     MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      #   run: docker-compose up -d --build  
-
-      # - name: Print Docker Compose logs
-      #   run: docker-compose logs
-
       - name: Docker config 
         run: |
-              docker network create chat-network
-              docker run -d --name container_name_front --network chat-network -p 8080:8080 maneav78/chat-front
-              
-      - name: Image Run Seperately steps
-        run: docker run -d --name container_name --network chat-network -p 5000:5000 -e OPENAI_API_KEY="$OPENAI_API_KEY" -e MONGODB_URI="$MONGODB_URI" maneav78/chat-back
+          docker network create chat-network || true
+          docker run -d --name container_name_front --network chat-network -p 8080:8080 maneav78/chat-front
 
-      - name: Docker logging
+      - name: Image Run Seperately steps
+        run: docker run -d --name container_name --network chat-network -p 5000:5000 -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e MONGODB_URI="${{ secrets.MONGODB_URI }}" maneav78/chat-back
+
+      - name: Docker logging - Back Container
         run: docker logs container_name
 
-      - name: Docker logging
+      - name: Docker logging - Front Container
         run: docker logs container_name_front
 
-      - name: Docker inspecting
+      - name: Docker inspecting - Back Container
         run: docker inspect container_name
 
-      # - name: Docker Compose down
-      #   run: docker-compose down
+      - name: Docker inspecting - Front Container
+        run: docker inspect container_name_front
+
 
   test_send_chat_message:
     name: Test Send Chat Message
