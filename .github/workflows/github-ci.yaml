@@ -71,14 +71,17 @@ jobs:
       - name: Print Environment Variables
         run: printenv
 
-      - name: Docker config 
-        run: |
-          docker network create chat-network || true
-          docker run -d --name container_name_front --network chat-network -p 8080:8080 maneav78/chat-front
+      # - name: Docker config 
+      #   run: |
+      #     docker network create chat-network || true
+      #     docker run -d --name container_name_front --network chat-network -p 8080:8080 maneav78/chat-front
 
-      - name: Image Run Seperately steps
-        run: docker run -d --name container_name --network chat-network -p 5000:5000 -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e MONGODB_URI="${{ secrets.MONGODB_URI }}" maneav78/chat-back
+      # - name: Image Run Seperately steps
+      #   run: docker run -d --name container_name --network chat-network -p 5000:5000 -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e MONGODB_URI="${{ secrets.MONGODB_URI }}" maneav78/chat-back
 
+      - name: Docker Compose up
+        run: docker compose up -d --build
+        
       - name: Inspect Docker Network
         run: docker network inspect chat-network
 
