@@ -97,6 +97,10 @@ jobs:
       - name: Docker inspecting - Front Container
         run: docker inspect container_name_front
 
+      - name: Check if Back Container is Running
+        run: docker ps | grep container_name || echo "Back container is not running"
+
+
 
   test_send_chat_message:
     name: Test Send Chat Message
