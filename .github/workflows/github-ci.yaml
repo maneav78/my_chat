@@ -79,8 +79,14 @@ jobs:
       - name: Image Run Seperately steps
         run: docker run -d --name container_name --network chat-network -p 5000:5000 -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e MONGODB_URI="${{ secrets.MONGODB_URI }}" maneav78/chat-back
 
+      - name: Inspect Docker Network
+        run: docker network inspect chat-network
+
       - name: Docker logging - Back Container
         run: docker logs container_name
+
+      - name: Echo Environment Variables in Back Container
+        run: docker exec container_name sh -c 'echo $OPENAI_API_KEY && echo $MONGODB_URI'
 
       - name: Docker logging - Front Container
         run: docker logs container_name_front
