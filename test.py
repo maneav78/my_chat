@@ -33,6 +33,7 @@ if __name__ == '__main__':
             attempts += 1
             time.sleep(5) 
     if connected:
+        print("connected")
         sio.wait()  
     else:
         print('Failed to connect after several attempts')
