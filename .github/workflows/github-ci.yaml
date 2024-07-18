@@ -105,6 +105,11 @@ jobs:
 
       - name: Docker logging - Front Container
         run: docker logs chat-vue-dc
+      - name: Connecting to network
+        run: |
+              docker network connect chat-network chat-main-dc
+              docker network connect chat-network chat-vue-dc
+              docker network connect chat-network test-script-dc
 
       - name: Inspect Docker Network
         run: docker network inspect chat-network
