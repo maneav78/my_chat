@@ -94,6 +94,12 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: docker-compose up -d --build
 
+      - name: Connecting to network
+        run: |
+          docker network connect chat-network chat-main-dc
+          docker network connect chat-network chat-vue-dc
+          docker network connect chat-network test-script-dc
+
       - name: Check if Back Container is Running
         run: docker ps | grep chat-main-dc || echo "Back container is not running"
 
@@ -105,11 +111,6 @@ jobs:
 
       - name: Docker logging - Front Container
         run: docker logs chat-vue-dc
-      - name: Connecting to network
-        run: |
-              docker network connect chat-network chat-main-dc
-              docker network connect chat-network chat-vue-dc
-              docker network connect chat-network test-script-dc
 
       - name: Inspect Docker Network
         run: docker network inspect chat-network

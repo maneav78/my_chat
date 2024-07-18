@@ -26,14 +26,14 @@ if __name__ == '__main__':
     attempts = 0
     while not connected and attempts < 5:
         try:
-            sio.connect('http://localhost:5000')
+            sio.connect('http://localhost:5000')  
             connected = True
         except socketio.exceptions.ConnectionError as e:
-            print(f'Connection failed, attempt {attempts + 1}')
+            print(f'Connection failed, attempt {attempts + 1}: {e}')
             attempts += 1
             time.sleep(5)
     if connected:
-        print("connected")
+        print("Connected successfully")
         sio.wait()
     else:
         print('Failed to connect after several attempts')
