@@ -160,6 +160,11 @@ jobs:
       - name: Install Python requirements
         run: pip install -r requirements.txt
 
+      - name: Check Back Container Health
+        run: |
+          sleep 10  
+          curl -v http://localhost:5000
+          
       - name: Run script to send chat message
         run: python test.py
 
