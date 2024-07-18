@@ -39,6 +39,7 @@ def handle_message(msg):
 
 @socketio.on('connect')
 def handle_connect(auth=None):
+    print('Client connected')
     messages = list(messages_col.find({}, {'_id': 0}))
     for message in messages:
         emit('receive_message', message)
@@ -47,6 +48,7 @@ def handle_connect(auth=None):
 @socketio.on('send_message')
 def handle_send_message(data):
     user_message = data["message"]
+    print('send_message event received:', user_message)
     if user_message.startswith("/ask"):
         query = user_message[5:].strip()
         user_message_doc = {'name': data['name'], 'message': user_message, 'time': data["time"]}
@@ -84,6 +86,7 @@ def handle_send_message(data):
 
 @socketio.on('disconnect')
 def handle_disconnect():
+    print('Client disconnected')
     user_left = users_col.find_one_and_delete({'sid': request.sid})
     if user_left:
         emit('user_left', {'name': user_left['name']}, broadcast=True)

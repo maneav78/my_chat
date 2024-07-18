@@ -31,9 +31,9 @@ if __name__ == '__main__':
         except socketio.exceptions.ConnectionError as e:
             print(f'Connection failed, attempt {attempts + 1}')
             attempts += 1
-            time.sleep(5) 
+            time.sleep(5)
     if connected:
         print("connected")
-        sio.wait()  
+        sio.wait()
     else:
         print('Failed to connect after several attempts')
