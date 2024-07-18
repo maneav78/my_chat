@@ -19,6 +19,14 @@ services:
     networks:
       - chat-network
 
+  test-script:
+    image: maneav78/chat-test:latest
+    container_name: test-script-dc
+    networks:
+      - chat-network
+    depends_on:
+      - chat-main
+
 networks:
   chat-network:
     driver: bridge
