@@ -11,7 +11,6 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - MONGODB_URI=${MONGODB_URI}
   
-
   chat-vue:
     image: maneav78/chat-front:latest
     container_name: chat-vue-dc

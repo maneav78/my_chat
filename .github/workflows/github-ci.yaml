@@ -81,27 +81,24 @@ jobs:
       run: docker-compose up -d --build
 
     - name: Check if Back Container is Running
-      run: docker ps | grep chat-back || echo "Back container is not running"
+      run: docker ps | grep chat-main-dc || echo "Back container is not running"
 
     - name: Check if Front Container is Running
-      run: docker ps | grep chat-front || echo "Front container is not running"
+      run: docker ps | grep chat-vue-dc || echo "Front container is not running"
 
     - name: Docker logging - Back Container
-      run: docker logs chat-back
+      run: docker logs chat-main-dc
 
     - name: Docker logging - Front Container
-      run: docker logs chat-front
+      run: docker logs chat-vue-dc
 
     - name: Inspect Docker Network
       run: docker network inspect chat-network
 
-    - name: Check Back Container Health
-      run: |
-        sleep 10  # Wait for the application to start
-        curl -v http://localhost:5000/health  # Replace /health with an appropriate endpoint if necessary
-
-    - name: Run Back Container in Interactive Mode
-      run: docker run -it --name chat-back --network chat-network -p 5000:5000 -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e MONGODB_URI="${{ secrets.MONGODB_URI }}" maneav78/chat-back /bin/bash
+    # - name: Check Back Container Health
+    #   run: |
+    #     sleep 10  
+    #     curl -v http://localhost:5000/health  
 
 
 
