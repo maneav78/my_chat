@@ -57,51 +57,51 @@ jobs:
     needs: images
 
     steps:
-  - name: Checkout code
-    uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  - name: Set up Docker Buildx
-    uses: docker/setup-buildx-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
-  - name: Set environment variables
-    run: |
-      echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
-      echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> $GITHUB_ENV
+    - name: Set environment variables
+      run: |
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> $GITHUB_ENV
 
-  - name: Print Environment Variables
-    run: printenv
+    - name: Print Environment Variables
+      run: printenv
 
-  - name: Ensure Network Creation
-    run: docker network create chat-network || true
+    - name: Ensure Network Creation
+      run: docker network create chat-network || true
 
-  - name: Docker Compose Up
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-    run: docker-compose up -d --build
+    - name: Docker Compose Up
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      run: docker-compose up -d --build
 
-  - name: Check if Back Container is Running
-    run: docker ps | grep chat-back || echo "Back container is not running"
+    - name: Check if Back Container is Running
+      run: docker ps | grep chat-back || echo "Back container is not running"
 
-  - name: Check if Front Container is Running
-    run: docker ps | grep chat-front || echo "Front container is not running"
+    - name: Check if Front Container is Running
+      run: docker ps | grep chat-front || echo "Front container is not running"
 
-  - name: Docker logging - Back Container
-    run: docker logs chat-back
+    - name: Docker logging - Back Container
+      run: docker logs chat-back
 
-  - name: Docker logging - Front Container
-    run: docker logs chat-front
+    - name: Docker logging - Front Container
+      run: docker logs chat-front
 
-  - name: Inspect Docker Network
-    run: docker network inspect chat-network
+    - name: Inspect Docker Network
+      run: docker network inspect chat-network
 
-  - name: Check Back Container Health
-    run: |
-      sleep 10  # Wait for the application to start
-      curl -v http://localhost:5000/health  # Replace /health with an appropriate endpoint if necessary
+    - name: Check Back Container Health
+      run: |
+        sleep 10  # Wait for the application to start
+        curl -v http://localhost:5000/health  # Replace /health with an appropriate endpoint if necessary
 
-  - name: Run Back Container in Interactive Mode
-    run: docker run -it --name chat-back --network chat-network -p 5000:5000 -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e MONGODB_URI="${{ secrets.MONGODB_URI }}" maneav78/chat-back /bin/bash
+    - name: Run Back Container in Interactive Mode
+      run: docker run -it --name chat-back --network chat-network -p 5000:5000 -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e MONGODB_URI="${{ secrets.MONGODB_URI }}" maneav78/chat-back /bin/bash
 
 
 
