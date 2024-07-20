@@ -1,5 +1,6 @@
 import time
 import socketio
+import sys
 
 sio = socketio.Client()
 
@@ -22,11 +23,12 @@ def send_message():
     print(f'Sent message: {predefined_message["message"]}')
 
 if __name__ == '__main__':
+    time.sleep(100)
     connected = False
     attempts = 0
     while not connected and attempts < 5:
         try:
-            sio.connect('http://localhost:5000')  
+            sio.connect('http://chat-main-dc:5000')  
             connected = True
         except socketio.exceptions.ConnectionError as e:
             print(f'Connection failed, attempt {attempts + 1}: {e}')
@@ -34,6 +36,7 @@ if __name__ == '__main__':
             time.sleep(5)
     if connected:
         print("Connected successfully")
-        sio.wait()
+        sys.exit()
     else:
         print('Failed to connect after several attempts')
+        sys.exit(1)
