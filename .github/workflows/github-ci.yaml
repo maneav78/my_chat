@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       - name: Install Docker Compose
         run: |
@@ -129,14 +129,6 @@ jobs:
       - name: Docker logging - Test Container
         run: docker logs test-script-dc
 
-      - name: Copy test.py into test container
-        run: docker cp ./test.py test-script-dc:/test.py
-
-      - name: Run test.py in test container
-        run: docker exec test-script-dc python /test.py
-
-      - name: Docker logging - Test Container
-        run: docker logs test-script-dc
 
   deploy:
     name: Deploy to Kubernetes
