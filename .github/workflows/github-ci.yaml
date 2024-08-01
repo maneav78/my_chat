@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v1
 
       - name: Install Docker Compose
         run: |
@@ -104,7 +104,6 @@ jobs:
         run: |
           docker network connect chat-network chat-main-dc
           docker network connect chat-network chat-vue-dc
-          docker network connect chat-network test-script-dc
 
       - name: Check if Back Container is Running
         run: docker ps | grep chat-main-dc || echo "Back container is not running"
@@ -128,6 +127,9 @@ jobs:
 
       - name: Build test Docker image
         run: docker build -t test-script:latest -f ./testing/Dockerfile ./testing
+
+      - name: Remove existing test container
+        run: docker rm -f test-script-dc || true
 
       - name: Run test Docker container
         run: |
