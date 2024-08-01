@@ -126,6 +126,14 @@ jobs:
           sleep 10  
           curl -v http://localhost:5000
 
+      - name: Build test Docker image
+        run: docker build -t test-script:latest -f ./testing/Dockerfile ./testing
+
+      - name: Run test Docker container
+        run: |
+          docker run --network chat-network --name test-script-dc test-script:latest
+          sleep 120  # Wait for the test to complete
+
       - name: Docker logging - Test Container
         run: docker logs test-script-dc
 
