@@ -65,6 +65,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/chat-test:latest
 
+
   compose_checking:
     name: Check Docker Compose
     runs-on: ubuntu-latest
@@ -138,6 +139,10 @@ jobs:
 
       - name: Docker logging - Test Container
         run: docker logs test-script-dc
+
+      - name: Check if Test Succeeded
+        run: |
+          docker logs test-script-dc | grep "Connected successfully" || exit 1
 
 
   deploy:
